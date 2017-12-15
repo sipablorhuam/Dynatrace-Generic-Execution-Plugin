@@ -1,0 +1,45 @@
+{
+    "name": "custom.python.generic_exec_plugin",
+    "version": "1.45",
+    "type": "python",
+    "entity": "HOST",
+    "processTypeNames": [ "LINUX_SYSTEM" ],
+    "source": {
+        "package": "gen_exec_plugin",
+        "className": "GenExecPlugin",
+        "install_requires": [ ],
+        "activation": "Singleton"
+    },
+    "metrics": [
+        {
+            "timeseries": {
+                "key": "num_files_home_folder",
+                "unit": "Count",
+                "displayname": "Files"
+            },
+            "source": {
+                "command": "/home/<user>/listfiles"
+            }
+        }
+    ],
+	"ui": {
+		"charts": [
+            {
+                "group": "Home Folder",
+                "title": "Number of Files",
+                "description": " ",
+                "series": [
+                    {
+                        "key": "num_files_home_folder",
+                        "displayname": "Avg Number of Files",
+                        "aggregation": "avg",
+                        "seriestype": "bar",
+                        "stacked": false,
+                        "color": "#e31a1c"
+                    }
+                 ]
+            }
+        ]
+	}
+	
+}
