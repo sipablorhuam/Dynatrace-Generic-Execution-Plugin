@@ -1,4 +1,4 @@
-# oneagent-generic-execution-plugin
+# Dynatrace-Generic-Execution-Plugin
 A Sample OneAgent Plugin that collects additional metrics for the host it is deployed on by executing configurable commands
 
 ## Motivation for this project
