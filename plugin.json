@@ -18,7 +18,8 @@
                 "displayname": "Files"
             },
             "source": {
-                "command": "/home/<user>/listfiles"
+                "command": "/home/<user>/listfiles",
+				"eval": "(.*)"
             }
         }
     ],
