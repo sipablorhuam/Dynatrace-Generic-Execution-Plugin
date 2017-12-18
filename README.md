@@ -9,6 +9,8 @@ Specifically for host metrics it's very often just a matter of invoking an alrea
 This Plugin allows you to specify configure these additional metrics within the `plugin.json` file alongside with the command line to invoke and a regular expression that extracts the timeseries data from the output delivered by this command.
 There is however no need to modify the Python Code of the Plugin, unless you would like to extend it with additional functionality.
 
+This project is meant to be a template for situations where there already exists an executable command, that is able to gather data in an easier fashion than implementing that functionality within Python completely. It's nevertheless in general advisable to find ways to query for the same data from within Python without having to invoke an external process - most apparent reason for that is a better chance to perform error handling properly.
+
 ## Installation
 OneAgent Plugins need to get installed both, on you Tenant and on the host(s) they are supposed to collect data for - mainly for security reasons. NO third party code is getting executed by your OneAgent unless your Tenant and your Agent agree on the authenticity of your plugin.
 This is why you need to install, in addition to your Tenant, on selected Hosts, that have OneAgent running and are supposed to execute your Plugin.
@@ -85,5 +87,8 @@ You can add a timeseries either into an existing chart (where it shares the char
 the `group` property allows for separating timeseries for different topics into their own tab within the Tenant UI.
 Adding a timeseries to a chart requires an additional entry within the `series` array, whe the property `key` is the property that refers to the unique identifier defined within the `metric ` section. The properties `displayname`, `aggregation`, `seriestype`, `stacked` and `color` may get omitted and will have default values if not specified.
 
+## Visualization within your Tenant Web UI
+The type of entity this plugin is collecting data for are hosts. Therefore you need to navigate to the Details page of the host it is installed on.
+A click on the Elipsis as seen on this screenshot reveals the menu entry `Plugin Metrics`.
 ![Menu](/images/menu.png)
 ![Chart](/images/chart.png)
