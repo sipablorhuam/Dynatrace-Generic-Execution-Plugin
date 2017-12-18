@@ -23,10 +23,18 @@ This is why you need to install, in addition to your Tenant, on selected Hosts, 
 * Restart Oneagent (e.g. `sudo service oneagent restart`)
 
 ## Customization
+In this document only the configuration options relevant to this plugin are mentioned.
+Customizing the declarative part of a OneAgent Plugin is getting explained in detail within the [OneAgent SDK documentation](https://dynatrace.github.io/plugin-sdk/index.html).
+
+### Metric definition
 This Project by default just invokes a sample executable it expects to find on your monitored host.
 In order to add more metrics to be captured you will need to modify the `plugin.json` before deploying the Plugin.
 
+The metric included in the default `plugin.json` consists of a `timeseries` section and a `source` section.
+Adding an additional metric just requires to add an additional entry to the already existing `metrics` array.
+
 ```json
+...
     "metrics": [
         {
             "timeseries": {
@@ -35,8 +43,45 @@ In order to add more metrics to be captured you will need to modify the `plugin.
                 "displayname": "Files"
             },
             "source": {
-                "command": "/home/reinhard/listfiles"
+                "command": "/home/reinhard/listfiles",
+                "eval": "(.*)"
             }
         }
     ],
+...
 ```
+The `timeseries` section defines the metric for Dynatrace, with `key` assigning it a unique identifier, the `unit` of the metric and a `displayname`.
+The `source` section is getting evaluated by the Python code of the plugin, with the `command` specifiying fully qualified path to the executable to run and `eval` expected to provide a regular expression that extracts a discrete number from the output of the executed command. The property `eval` may be omitted if the executed command already delivers as its output a discrete number. In other words, the eval value `(.*)` in this sample is not necessary.
+
+### Visualization
+The metric definition just takes care of collecting data. In order to get the timeseries values visualized properly, also the `ui` section needs to get extended, specifically the `charts` array needs an additional entry.
+
+```json
+...
+	"ui": {
+		"charts": [
+            {
+                "group": "Home Folder",
+                "title": "Number of Files",
+                "description": " ",
+                "series": [
+                    {
+                        "key": "num_files_home_folder",
+                        "displayname": "Avg Number of Files",
+                        "aggregation": "avg",
+                        "seriestype": "bar",
+                        "stacked": false,
+                        "color": "#e31a1c"
+                    }
+                 ]
+            }
+        ]
+	}
+...
+```
+
+Visualizing a metric essentially means to define what the chart should look like where it is supposed to appear.
+You can add a timeseries either into an existing chart (where it shares the chart with other metrics) or you create an entirely new chart.
+the `group` property allows for separating timeseries for different topics into their own tab within the Tenant UI.
+Adding a timeseries to a chart requires an additional entry within the `series` array, whe the property `key` is the property that refers to the unique identifier defined within the `metric ` section. The properties `displayname`, `aggregation`, `seriestype`, `stacked` and `color` may get omitted and will have default values if not specified.
+
