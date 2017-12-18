@@ -85,3 +85,5 @@ You can add a timeseries either into an existing chart (where it shares the char
 the `group` property allows for separating timeseries for different topics into their own tab within the Tenant UI.
 Adding a timeseries to a chart requires an additional entry within the `series` array, whe the property `key` is the property that refers to the unique identifier defined within the `metric ` section. The properties `displayname`, `aggregation`, `seriestype`, `stacked` and `color` may get omitted and will have default values if not specified.
 
+![Menu](/images/menu.png)
+![Chart](/images/chart.png)
