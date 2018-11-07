@@ -1,9 +1,9 @@
 {
     "name": "custom.python.generic_exec_plugin",
-    "version": "1.45",
+    "version": "1.47",
     "type": "python",
     "entity": "HOST",
-    "processTypeNames": [ "LINUX_SYSTEM" ],
+    "processTypeNames": [ "LINUX_SYSTEM", "UNKNOWN" ],
     "source": {
         "package": "gen_exec_plugin",
         "className": "GenExecPlugin",
