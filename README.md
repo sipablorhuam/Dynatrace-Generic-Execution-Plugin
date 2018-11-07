@@ -20,9 +20,23 @@ This is why you need to install any custom plugin, in addition to your Tenant, o
 * Click on the button `Upload Plugin` and install your zip archive on your tenant.
 * Select the new entry in the list of your plugins and promote it from Staging to Production
 ### Installation on your monitored host
+* Make sure you're installing this Plugin on a Linux host. Without any modifications it won't produce valid results on Windows.
 * Create a folder name `custom.python.generic_exec_plugin` within `/opt/dynatrace/oneagent/plugin_deployment`
 * Copy `plugin.json` and `gen_exec_plugin.py` into that folder
 * Restart Oneagent (e.g. `sudo service oneagent restart`)
+* Make sure that the configured executable(s) exist and can get executed. For the sample configuration a shell script like this should be sufficient.
+```console
+#!/bin/sh
+ls -f . | wc -l
+```
+### Troubleshooting
+* The unmodified `plugin.json` expects an executable or shell script to be located at `/home/<user>/listfiles`.
+* Did you adapt the location of that file?
+* Check the permissions for this file. Is it executable for the user your Plugin Agent is executed for? (usually `dtuser`)
+* The Python code of the out of the box Plugin evaluates just the first line of the output written by `/home/<user>/listfiles` to stdout.
+* You may have to extend the Python code in case you'd like to parse multiple lines.
+* Especially when testing out the Plugin on a fresh Linux installation it's likely that the Plugin Agent doesn't seem to see the host to match the requirements for executing the Plugin at all. Reason for that is, that the Plugin Engine primarily focuses on the existence of processes that match the configured criteria. If there doesn't exist at least one process that is considered by OneAgent to be worth monitoring, the Plugin Engine won't execute the Plugin. A feasible workaround here is to install Apache HTTPD on short notice on the development machine (no need for specific confgurations).
+
 
 ## Customization
 In this document only the configuration options relevant to this plugin are mentioned.
